@@ -1,0 +1,45 @@
+
+
+for total deaths in continent
+
+SELECT continent, MAX(cast(total_deaths as int)) as totaldeathcount
+FROM `project-learning-388620.Covid_Project.Covid Deaths` 
+where continent is not null
+Group By continent
+order by totaldeathcount
+
+
+for total death count in countries(location)
+
+SELECT location, MAX(total_deaths) as totaldeathcount
+FROM `project-learning-388620.Covid_Project.Covid Deaths` 
+Group By location
+order by totaldeathcount
+
+
+global death count
+
+SELECT SUM(new_cases) as total_cases, SUM(CAST(new_deaths as Int)) as total_deaths, SUM(CAST(new_deaths as Int))/SUM(new_cases)*100 as deathpercentage
+FROM `project-learning-388620.Covid_Project.Covid Deaths` 
+where continent is not null
+
+
+total population vs vaccinated
+
+select DEA.continent, DEA.location, DEA.date, DEA.population, Vacc.new_vaccinations
+from `project-learning-388620.Covid_Project.Covid_Vaccinations` as Vacc FULL JOIN
+`project-learning-388620.Covid_Project.Covid Deaths` as DEA ON 
+DEA.location = Vacc.location and
+DEA.date = Vacc.date
+where DEA.continent is not null
+
+
+Cardiovascular death rate
+select Death.continent, Death.location, Death.population, Vaccine.cardiovasc_death_rate
+FROM `project-learning-388620.Covid_Project.Covid Deaths` as Death 
+FULL JOIN `project-learning-388620.Covid_Project.Covid_Vaccinations` as Vaccine ON
+Death.location = Vaccine.location
+WHERE Death.continent is not null
+and Vaccine.cardiovasc_death_rate is not null
+
+
